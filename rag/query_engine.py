@@ -4,6 +4,7 @@ from llama_index.core import VectorStoreIndex, get_response_synthesizer, QueryBu
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.retrievers import VectorIndexRetriever
 from llama_index.core.postprocessor.types import BaseNodePostprocessor
+from llama_index.core.schema import NodeWithScore
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
 
@@ -75,36 +76,39 @@ class QueryEngine:
         """Build reranker using cross-encoder."""
         try:
             from sentence_transformers import CrossEncoder
-            model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
-            
             from pydantic import Field, PrivateAttr
             
+            model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+            
             class SimpleReranker(BaseNodePostprocessor):
-                top_n: int = Field(default=6)
-                _model: Any = PrivateAttr()
+                top_n: int = Field(default=4)
+                _model: Any = PrivateAttr(default=None)
                 
-                def __init__(self, model, top_n, **kwargs):
-                    super().__init__(top_n=top_n, **kwargs)
+                def model_post_init(self, __context: Any) -> None:
+                    """Initialize private attribute after Pydantic model initialization."""
                     self._model = model
                 
-                @property
-                def model(self):
-                    return self._model
-                
-                def _postprocess_nodes(self, nodes, query_bundle):
-                    if len(nodes) <= self.top_n:
+                def _postprocess_nodes(
+                    self,
+                    nodes: List[NodeWithScore],
+                    query_bundle: Optional[QueryBundle] = None,
+                ) -> List[NodeWithScore]:
+                    """Rerank nodes using cross-encoder model."""
+                    if not nodes or query_bundle is None or len(nodes) <= self.top_n:
                         return nodes
                     
                     query_text = query_bundle.query_str
-                    pairs = [[query_text, node.text] for node in nodes]
+                    pairs = [[query_text, node.node.get_content()] for node in nodes]
                     scores = self._model.predict(pairs)
                     
-                    scored_nodes = list(zip(nodes, scores))
-                    scored_nodes.sort(key=lambda x: x[1], reverse=True)
-                    
-                    return [node for node, _ in scored_nodes[:self.top_n]]
+                    reranked = [
+                        NodeWithScore(node=node.node, score=float(score))
+                        for node, score in zip(nodes, scores)
+                    ]
+                    reranked.sort(key=lambda x: x.score or 0.0, reverse=True)
+                    return reranked[:self.top_n]
             
-            reranker = SimpleReranker(model, top_n)
+            reranker = SimpleReranker(top_n=top_n)
             logger.info("Using SentenceTransformer reranker")
             return reranker
         except Exception as e:
