@@ -21,6 +21,7 @@ python-slugify = "*"
 sentence-transformers = "*"
 python-multipart = "*"
 requests = "*"
+streamlit = "*"
 
 [dev-packages]
 

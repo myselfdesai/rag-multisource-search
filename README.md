@@ -1,4 +1,4 @@
-# RAG Challenge - Retrieval-Augmented Generation System
+# Retrieval-Augmented Generation System
 
 End-to-end RAG prototype built with LlamaIndex, Pinecone, and FastAPI for document-based question answering.
 
@@ -121,6 +121,22 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
 The API will be available at `http://localhost:8000`.
+
+### Start Streamlit UI (Optional)
+
+For a web-based interface, you can use the Streamlit UI:
+
+```bash
+pipenv run streamlit run streamlit_app.py
+```
+
+The UI will be available at `http://localhost:8501` and provides:
+- Document upload interface
+- Query interface with results display
+- Source citations and metadata
+- System status
+
+**Note**: The FastAPI server must be running for the Streamlit UI to work.
 
 ### API Endpoints
 

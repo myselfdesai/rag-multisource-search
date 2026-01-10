@@ -3,7 +3,7 @@ from typing import List, Dict, Any, Optional
 from llama_index.core import VectorStoreIndex, get_response_synthesizer, QueryBundle
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.retrievers import VectorIndexRetriever
-from llama_index.core.postprocessor import BaseNodePostprocessor
+from llama_index.core.postprocessor.types import BaseNodePostprocessor
 from llama_index.llms.openai import OpenAI
 from llama_index.embeddings.openai import OpenAIEmbedding
 
@@ -77,11 +77,19 @@ class QueryEngine:
             from sentence_transformers import CrossEncoder
             model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
             
+            from pydantic import Field, PrivateAttr
+            
             class SimpleReranker(BaseNodePostprocessor):
-                def __init__(self, model, top_n):
-                    super().__init__()
-                    self.model = model
-                    self.top_n = top_n
+                top_n: int = Field(default=6)
+                _model: Any = PrivateAttr()
+                
+                def __init__(self, model, top_n, **kwargs):
+                    super().__init__(top_n=top_n, **kwargs)
+                    self._model = model
+                
+                @property
+                def model(self):
+                    return self._model
                 
                 def _postprocess_nodes(self, nodes, query_bundle):
                     if len(nodes) <= self.top_n:
@@ -89,7 +97,7 @@ class QueryEngine:
                     
                     query_text = query_bundle.query_str
                     pairs = [[query_text, node.text] for node in nodes]
-                    scores = self.model.predict(pairs)
+                    scores = self._model.predict(pairs)
                     
                     scored_nodes = list(zip(nodes, scores))
                     scored_nodes.sort(key=lambda x: x[1], reverse=True)
@@ -125,7 +133,7 @@ class QueryEngine:
         reranker = self._build_reranker(top_n=self.settings.rerank_top_n)
         if reranker:
             query_bundle = QueryBundle(question)
-            retrieved_nodes = reranker.postprocess_nodes(query_bundle, retrieved_nodes)
+            retrieved_nodes = reranker.postprocess_nodes(retrieved_nodes, query_bundle)
             logger.info(f"After reranking: {len(retrieved_nodes)} nodes")
         
         retrieved_nodes = retrieved_nodes[:self.settings.rerank_top_n]

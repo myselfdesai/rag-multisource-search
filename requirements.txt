@@ -15,4 +15,5 @@ python-slugify
 sentence-transformers
 python-multipart
 requests
+streamlit
 
