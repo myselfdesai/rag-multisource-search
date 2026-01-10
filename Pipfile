@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+pydantic = "*"
+pydantic-settings = "*"
+llama-index = "*"
+llama-index-vector-stores-pinecone = "*"
+llama-index-embeddings-openai = "*"
+llama-index-llms-openai = "*"
+pinecone = "*"
+openai = "*"
+pypdf2 = "*"
+python-docx = "*"
+pandas = "*"
+python-slugify = "*"
+sentence-transformers = "*"
+python-multipart = "*"
+requests = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
+python_full_version = "3.10.10"
