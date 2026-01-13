@@ -122,9 +122,9 @@ View results in UI "Evaluation Results" tab
 ## System Details
 
 ### Chunking Strategies
-- **PDF**: 900 tokens, 120 overlap, paragraph-based
-- **DOCX**: 750 tokens, 100 overlap, section-aware
-- **CSV**: One chunk per row
+- **PDF**: 900 tokens, 120 overlap, paragraph-based (semantic chunking)
+- **DOCX**: 750 tokens, 100 overlap, section-aware (semantic chunking)
+- **CSV**: One chunk per row ( **Basic implementation** - see Future Improvements)
 
 ### Metadata Tracked
 Each chunk includes: doc_id, source_name, source_type, page/section/row, chunk_index, embedding_model, timestamps
@@ -134,6 +134,39 @@ Format: `{doc_id}:{locator}:{content_kind}:{chunk_index}`
 - PDF: `p5` (page 5)
 - DOCX: `s2` (section 2)  
 - CSV: `r10` (row 10)
+
+## Future Improvements
+
+### CSV Handling Enhancements
+Current CSV implementation is basic (one chunk per row). Planned improvements:
+
+1. **Intelligent Chunking**
+   - Group related rows together based on content similarity
+   - Support for large datasets (batch chunking)
+   - Configurable row grouping strategies
+
+2. **Header & Column Analysis**
+   - Automatic header detection and handling
+   - Column importance/weighting based on data types
+   - Primary key/ID column identification
+
+3. **Semantic Grouping**
+   - Detect categorical groupings (e.g., group rows by department, category)
+   - Temporal grouping (e.g., group time-series data by date ranges)
+   - Hierarchical relationships (parent-child rows)
+
+4. **Metadata Extraction**
+   - Extract column names, data types, and statistics
+   - Add column descriptions/context to embeddings
+   - Support for multi-value columns (lists, arrays)
+
+5. **Query Optimization**
+   - Column-specific search (e.g., "find rows where status=active")
+   - Aggregate queries (e.g., "summarize sales by region")
+   - Hybrid search combining structured filters + semantic search
+
+> [!NOTE]
+> These improvements will be implemented in future releases. Current CSV support is functional but optimized for simple, small datasets.
 
 ## Troubleshooting
 
