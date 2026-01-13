@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     llm_model: str = "gpt-4o-mini"
     
     # Application defaults
-    default_namespace: str = "dev"
+    default_namespace: str = "prod"
     
     # Retrieval defaults
     default_top_k: int = 20

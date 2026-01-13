@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 class QueryEngine:
     """RAG query engine with retrieval, reranking, and generation."""
     
-    def __init__(self, namespace: str = "dev"):
+    def __init__(self, namespace: str = "prod"):
         self.settings = get_settings()
         self.namespace = namespace
         self.store = PineconeStore(namespace=namespace)

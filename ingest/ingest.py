@@ -88,7 +88,7 @@ def main():
     """CLI entry point for ingestion."""
     parser = argparse.ArgumentParser(description='Ingest documents into Pinecone vector store')
     parser.add_argument('--input_dir', type=str, required=True, help='Directory containing documents to ingest')
-    parser.add_argument('--namespace', type=str, default='dev', help='Pinecone namespace')
+    parser.add_argument('--namespace', type=str, default='prod', help='Pinecone namespace')
     parser.add_argument('--reingest', action='store_true', help='Re-ingest documents even if already indexed')
     
     args = parser.parse_args()

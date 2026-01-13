@@ -33,15 +33,13 @@ The system consists of three main components:
 │   ├── ingest.py            # CLI ingestion pipeline
 │   ├── loaders.py           # PDF, DOCX, CSV loaders
 │   ├── cleaning.py          # Text normalization
-│   └── chunking.py          # Document chunking strategies
+│   └── chunking.py          # Semantic chunking strategies
 ├── rag/
 │   ├── query_engine.py      # Query engine with retrieval + generation
 │   └── prompts.py           # Prompt templates
 ├── storage/
 │   └── pinecone_store.py    # Pinecone integration
-├── eval/
-│   ├── test_queries.json    # Test query set
-│   └── eval_runner.py       # Evaluation runner
+├── streamlit_app.py         # Streamlit UI
 ├── requirements.txt
 ├── .env.example
 └── README.md
@@ -71,39 +69,31 @@ Required environment variables:
 - `OPENAI_API_KEY`: Your OpenAI API key
 - `EMBEDDING_MODEL`: Embedding model (default: `text-embedding-3-small`)
 - `LLM_MODEL`: LLM model for generation (default: `gpt-4o-mini`)
-- `DEFAULT_NAMESPACE`: Default namespace for documents (default: `dev`)
+- `DEFAULT_NAMESPACE`: Default namespace for documents (default: `prod`)
 
-### 3. Prepare Documents
 
-Place your documents (PDF, DOCX, CSV) in a directory, for example:
-
-```bash
-mkdir -p data
-# Copy your documents to data/
-```
-
-## Usage
+## Usage 
 
 ### Ingestion
 
 Ingest documents into Pinecone:
 
 ```bash
-python -m ingest.ingest --input_dir data/ --namespace dev --reingest false
+python -m ingest.ingest --input_dir data/ --namespace prod --reingest false
 ```
 
 Arguments:
 - `--input_dir`: Directory containing documents to ingest
-- `--namespace`: Pinecone namespace (default: `dev`)
+- `--namespace`: Pinecone namespace (default: `prod`)
 - `--reingest`: Whether to re-ingest already processed documents (default: `false`)
 
 The ingestion pipeline will:
 1. Detect file types automatically
 2. Extract text with location metadata (page numbers for PDFs, sections for DOCX, row IDs for CSV)
 3. Clean and normalize text
-4. Chunk documents with type-specific strategies:
-   - PDF: ~900 token chunks with 120 token overlap
-   - DOCX: ~750 token chunks with 100 token overlap
+4. Chunk documents with semantic chunking strategies:
+   - PDF: Paragraph-based chunking (~900 token target) with semantic boundaries
+   - DOCX: Section-aware chunking (~750 token target) grouping by headings
    - CSV: One chunk per row
 5. Generate embeddings
 6. Upsert to Pinecone with rich metadata
@@ -153,14 +143,14 @@ curl -X POST http://localhost:8000/query \
   -H "Content-Type: application/json" \
   -d '{
     "question": "What is the core idea behind transformers?",
-    "namespace": "dev",
+    "namespace": "prod",
     "top_k": 20
   }'
 ```
 
 Request fields:
 - `question` (required): The question to answer
-- `namespace` (optional): Pinecone namespace (default: `dev`)
+- `namespace` (optional): Pinecone namespace (default: `prod`)
 - `top_k` (optional): Number of chunks to retrieve (default: 20)
 - `source_type` (optional): Filter by source type (`pdf`, `docx`, `csv`)
 - `doc_id` (optional): Filter by specific document ID
@@ -172,22 +162,7 @@ Response includes:
 - `retrieved`: Full retrieval results for debugging
 - `meta`: Metadata about the query execution
 
-### Evaluation
 
-Run the evaluation suite:
-
-```bash
-python -m eval.eval_runner --queries eval/test_queries.json --output eval/results.jsonl
-```
-
-This will:
-1. Load test queries from `eval/test_queries.json`
-2. Execute each query against the API
-3. Save results to `eval/results.jsonl` with fields for manual scoring:
-   - `retrieval_relevance` (0-2): How relevant are the retrieved chunks?
-   - `groundedness` (0-2): Is the answer grounded in the retrieved content?
-   - `completeness` (0-2): Does the answer fully address the question?
-   - `notes`: Additional observations
 
 ## Deployment
 
@@ -223,44 +198,7 @@ COPY . .
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-## Evaluation Results
 
-### Test Queries
-
-The evaluation suite includes 8 test queries covering:
-- Transformer architecture questions
-- DeepSeek-R1 questions
-- EU AI Act questions
-- Cross-document comparison
-- Negative test (should refuse if not in documents)
-
-### Performance Observations
-
-After running evaluation, review `eval/results.jsonl` and document:
-
-1. **Retrieval Relevance**: How well does the system retrieve relevant chunks?
-   - Observe if top-k retrieval captures the right documents
-   - Check if reranking improves relevance
-
-2. **Response Quality**: 
-   - Are answers grounded in retrieved content?
-   - Do citations match the answer claims?
-   - Are answers complete and accurate?
-
-3. **Limitations**:
-   - PDF extraction may miss complex layouts, tables, or figures
-   - No OCR pipeline for scanned documents
-   - Tables in PDFs may not be parsed correctly
-   - Images and figures are not processed
-   - Chunking may split important context across boundaries
-
-4. **Improvements**:
-   - Better table extraction (e.g., using `camelot` or `tabula`)
-   - Hybrid retrieval (combining keyword and semantic search)
-   - Query expansion and reformulation
-   - Better chunking strategies (e.g., semantic chunking)
-   - Multi-vector retrieval for better context
-   - Fine-tuned reranking models
 
 ## Configuration Details
 
@@ -313,7 +251,4 @@ The application uses Python's logging module. Set log level via environment vari
 export LOG_LEVEL=DEBUG
 ```
 
-## License
-
-This project is part of the Data Scientist II - RAG Challenge.
 

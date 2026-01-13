@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 class PineconeStore:
     """Wrapper for Pinecone vector store operations."""
     
-    def __init__(self, namespace: str = "dev"):
+    def __init__(self, namespace: str = "prod"):
         self.settings = get_settings()
         self.namespace = namespace
         self.pc = Pinecone(api_key=self.settings.pinecone_api_key)

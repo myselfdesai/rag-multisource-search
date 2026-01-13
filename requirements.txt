@@ -16,4 +16,7 @@ sentence-transformers
 python-multipart
 requests
 streamlit
+ragas
+datasets
+fpdf2
 
