@@ -1,0 +1,26 @@
+[
+    {
+        "question": "What is the aha moment observed during the training of DeepSeek-R1-Zero, and why is it significant?",
+        "ground_truth": "The aha moment refers to a phase during reinforcement learning where an intermediate version of DeepSeek-R1-Zero learns to allocate more thinking time by reevaluating its initial approach to a problem. This behavior emerges spontaneously without explicit supervision and demonstrates the model’s growing ability to reflect, revise reasoning steps, and adopt more effective problem-solving strategies. It is significant because it highlights how reinforcement learning alone can lead to advanced and human-like reasoning behaviors."
+    },
+    {
+        "question": "How does DeepSeek-R1-Zero use reinforcement learning to improve reasoning, and what role does the reward system play?",
+        "ground_truth": "DeepSeek-R1-Zero improves reasoning using Group Relative Policy Optimization (GRPO), which optimizes the policy by comparing groups of sampled outputs without relying on a separate critic model. Its reward system is rule-based and includes accuracy rewards to verify correctness of final answers and format rewards that enforce structured reasoning output, incentivizing longer and more coherent chain-of-thought reasoning without supervised data."
+    },
+    {
+        "question": "What is the main innovation introduced by the Transformer model in the paper ?",
+        "ground_truth": "The main innovation of the Transformer model is that it relies entirely on attention mechanisms, specifically self-attention, and completely removes recurrence and convolution from the model architecture. This design allows the model to capture global dependencies between input and output tokens while enabling significantly greater parallelization and faster training compared to recurrent or convolutional sequence models."
+    },
+    {
+        "question": "Why does the Transformer use positional encodings, and how are they implemented in the original model?",
+        "ground_truth": "The Transformer uses positional encodings because it has no recurrence or convolution and therefore lacks an inherent notion of token order. Positional encodings are added to the input embeddings to provide information about the position of tokens in a sequence. In the original model, these encodings are implemented using fixed sinusoidal functions of different frequencies, allowing the model to learn relative position relationships and extrapolate to longer sequences than those seen during training."
+    },
+    {
+        "question": "How does the EU AI Act classify AI systems based on risk, and which category is completely prohibited?",
+        "ground_truth": "The AI Act classifies AI according to its risk: Unacceptable risk is prohibited. Most of the text addresses high-risk AI systems, which are regulated. A smaller section handles limited risk AI systems, subject to lighter transparency obligations. Minimal risk is unregulated."
+    },
+    {
+        "question": "What obligations do providers of high-risk AI systems have under the EU AI Act?",
+        "ground_truth": "Providers of high-risk AI systems must establish a risk management system throughout the AI system’s lifecycle, ensure proper data governance, prepare technical documentation, enable record-keeping, provide instructions for use, design systems for human oversight, ensure accuracy, robustness and cybersecurity, and implement a quality management system to demonstrate compliance with the EU AI Act."
+    }
+]

@@ -1,6 +1,4 @@
-"""Text cleaning and normalization utilities."""
 import re
-
 
 def clean_text(text: str) -> str:
     """

@@ -8,6 +8,7 @@ from pathlib import Path
 import time
 from datetime import datetime
 from io import BytesIO
+import pandas as pd
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 DEFAULT_NAMESPACE = os.getenv("DEFAULT_NAMESPACE", "prod")
@@ -106,7 +107,7 @@ def main():
     else:
         st.success("API server is running")
     
-    tab1, tab2, tab3 = st.tabs(["Query Documents", "Upload Documents", "Status"])
+    tab1, tab2, tab3, tab4 = st.tabs([" Query Documents", "📤 Upload Documents", "📊 Evaluation Results", "⚙️ Status"])
     
     with tab1:
         st.header("Query Documents")
@@ -202,6 +203,91 @@ def main():
                     st.error(f"Error: {result.get('message', 'Unknown error')}")
     
     with tab3:
+        st.header("📊 Evaluation Results")
+        st.markdown("RAGAS evaluation metrics for assessing RAG system performance")
+        
+        results_file = Path("eval/results/latest_results.json")
+        
+        if results_file.exists():
+            with open(results_file, 'r', encoding='utf-8') as f:
+                eval_results = json.load(f)
+            
+            # Display timestamp
+            st.info(f"🕒 Last evaluated: {eval_results.get('timestamp', 'Unknown')}")
+            
+            # Overall Metrics Section
+            st.subheader("🎯 Overall Performance")
+            overall_metrics = eval_results.get("overall_metrics", {})
+            
+            if overall_metrics:
+                # Create metrics display in columns
+                cols = st.columns(3)
+                metric_order = [
+                    ("faithfulness", "Faithfulness", "🎯"),
+                    ("answer_relevancy", "Answer Relevancy", "🎯"),
+                    ("context_precision", "Context Precision", "🔍"),
+                    ("context_recall", "Context Recall", "📋"),
+                    ("answer_correctness", "Answer Correctness", "✓"),
+                    ("answer_similarity", "Answer Similarity", "≈")
+                ]
+                
+                for idx, (key, label, emoji) in enumerate(metric_order):
+                    if key in overall_metrics:
+                        col_idx = idx % 3
+                        with cols[col_idx]:
+                            score = overall_metrics[key]
+                            st.metric(
+                                label=f"{emoji} {label}",
+                                value=f"{score:.3f}"
+                            )
+                
+                # Show as table too
+                st.divider()
+                metrics_df = pd.DataFrame([overall_metrics])
+                # Only format numeric columns
+                st.dataframe(metrics_df.style.format(lambda x: f"{x:.4f}" if isinstance(x, (int, float)) else x), use_container_width=True)
+            
+            # Per-Query Results
+            st.divider()
+            st.subheader("📝 Per-Query Details")
+            
+            queries = eval_results.get("queries", [])
+            st.write(f"Total queries evaluated: **{len(queries)}**")
+            
+            for idx, query_result in enumerate(queries, 1):
+                with st.expander(f"Query {idx}: {query_result['question'][:80]}..."):
+                    # Question and Answer
+                    st.markdown("**Question:**")
+                    st.info(query_result['question'])
+                    
+                    st.markdown("**Generated Answer:**")
+                    st.success(query_result['answer'])
+                    
+                    st.markdown("**Ground Truth:**")
+                    st.warning(query_result.get('ground_truth', 'N/A'))
+                    
+                    # Metrics for this query
+                    if 'metrics' in query_result:
+                        st.markdown("**Metrics:**")
+                        metrics_df = pd.DataFrame([query_result['metrics']])
+                        # Only format numeric columns
+                        st.dataframe(metrics_df.style.format(lambda x: f"{x:.4f}" if isinstance(x, (int, float)) else x), use_container_width=True)
+                    
+                    # Retrieved Contexts
+                    if 'contexts' in query_result:
+                        with st.expander(f"📚 View Retrieved Contexts ({len(query_result['contexts'])} chunks)"):
+                            for ctx_idx, context in enumerate(query_result['contexts'], 1):
+                                st.markdown(f"**Context {ctx_idx}:**")
+                                st.code(context[:300] + "..." if len(context) > 300 else context)
+                    
+                    # Sources
+                    if 'sources' in query_result:
+                        st.markdown(f"**Sources:** {len(query_result['sources'])} documents")
+        
+        else:
+            st.warning("⚠️ No evaluation results found")
+    
+    with tab4:
         st.header("System Status")
         
         col1, col2 = st.columns(2)

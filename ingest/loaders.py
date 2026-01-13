@@ -1,4 +1,3 @@
-"""Document loaders for PDF, DOCX, and CSV files."""
 import hashlib
 import os
 from pathlib import Path

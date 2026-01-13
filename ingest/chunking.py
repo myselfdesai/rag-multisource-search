@@ -1,4 +1,3 @@
-"""Chunking strategies for different document types."""
 from typing import List, Dict, Any
 
 

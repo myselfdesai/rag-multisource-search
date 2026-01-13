@@ -1,4 +1,3 @@
-"""CLI ingestion pipeline for loading, chunking, and indexing documents."""
 import argparse
 import logging
 import os

@@ -1,4 +1,3 @@
-"""Prompt templates for RAG query engine."""
 from llama_index.core import PromptTemplate
 
 

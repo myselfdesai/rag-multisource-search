@@ -16,7 +16,6 @@ pinecone = "*"
 openai = "*"
 pypdf2 = "*"
 python-docx = "*"
-pandas = "*"
 python-slugify = "*"
 sentence-transformers = "*"
 python-multipart = "*"
@@ -25,6 +24,7 @@ streamlit = "*"
 ragas = "*"
 datasets = "*"
 fpdf2 = "*"
+pandas = "*"
 
 [dev-packages]
 

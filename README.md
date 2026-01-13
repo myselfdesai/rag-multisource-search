@@ -162,6 +162,33 @@ Response includes:
 - `retrieved`: Full retrieval results for debugging
 - `meta`: Metadata about the query execution
 
+### Evaluation
+
+Evaluate RAG system performance using RAGAS metrics:
+
+```bash
+python -m eval.ragas_eval
+```
+
+This will:
+1. Load test queries from `eval/queries.json`
+2. Query the RAG API for each test question
+3. Compute RAGAS metrics:
+   - **Faithfulness**: Answer grounded in retrieved context
+   - **Answer Relevancy**: Answer addresses the question
+   - **Context Precision**: Relevant chunks ranked higher
+   - **Context Recall**: All relevant context retrieved
+   - **Answer Correctness**: Similarity to ground truth
+   - **Answer Similarity**: Semantic similarity to ground truth
+4. Save results to `eval/results/`:
+   - `latest_results.json` - Detailed per-query results
+   - `detailed_results_TIMESTAMP.json` - Timestamped backup
+   - `summary_TIMESTAMP.csv` - Overall metrics summary
+   - `per_query_TIMESTAMP.csv` - Per-query metrics table
+
+View results in the Streamlit UI "Evaluation Results" tab.
+
+
 
 
 ## Deployment
