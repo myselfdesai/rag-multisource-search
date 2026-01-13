@@ -206,6 +206,9 @@ def save_results(
         "queries": detailed_results
     }
     
+    # Ensure results directory exists
+    Path(RESULTS_DIR).mkdir(parents=True, exist_ok=True)
+    
     # Save detailed JSON
     json_path = Path(RESULTS_DIR) / f"detailed_results_{timestamp}.json"
     with open(json_path, 'w', encoding='utf-8') as f:
