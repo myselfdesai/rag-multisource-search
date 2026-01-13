@@ -2,24 +2,74 @@
 
 End-to-end RAG prototype built with LlamaIndex, Pinecone, and FastAPI for document-based question answering.
 
-## Architecture
+## System Architecture
 
-The system consists of three main components:
+This RAG system is designed with four key layers for scalability, modularity, and maintainability:
 
-1. **Ingestion Pipeline**: Loads PDF, DOCX, and CSV documents, cleans and chunks them, generates embeddings, and stores them in Pinecone
-2. **Retrieval Component**: Uses embeddings-based similarity search with reranking to fetch relevant document chunks
-3. **Generation Component**: Synthesizes answers using an LLM (OpenAI) grounded in retrieved content
+### 1. Ingestion Layer
+The ingestion pipeline processes documents and stores them as vector embeddings in Pinecone:
+
+- **Document Loading**: Type-specific loaders for PDF, DOCX, and CSV files extract text with location metadata (pages, sections, rows)
+- **Text Processing**: Normalization and cleaning (Unicode handling, whitespace, newlines)
+- **Semantic Chunking**: Document-type-optimized strategies maintain semantic coherence:
+  - PDF: Paragraph-based chunking (~900 tokens) with recursive sentence splitting
+  - DOCX: Section-aware chunking (~750 tokens) grouped by headings
+  - CSV: Row-level chunking (one row per chunk)
+- **Embedding Generation**: OpenAI `text-embedding-3-small` (1536 dimensions)
+- **Vector Storage**: Deterministic vector IDs enable idempotent re-ingestion; rich metadata supports filtering
+
+### 2. Retrieval Layer
+The retrieval component finds relevant chunks using hybrid search:
+
+- **Vector Search**: Pinecone similarity search with configurable `top_k` (default: 20)
+- **Metadata Filtering**: Optional filters by namespace, source type, or document ID
+- **Reranking**: Cross-encoder model (`ms-marco-MiniLM-L-6-v2`) reranks top-20 to top-4 for precision
+
+### 3. Generation Layer
+The generation component synthesizes grounded answers:
+
+- **LLM**: OpenAI `gpt-4o-mini` with custom QA prompt template
+- **Context Assembly**: Top-ranked chunks provide grounding context
+- **Response Synthesis**: Compact mode balances quality and token efficiency
+- **Citation Tracking**: Source attribution with document names, locators, and snippets
+
+### 4. Deployment Layer
+Production-ready containerized deployment:
+
+- **FastAPI Backend**: RESTful API for querying and health checks
+- **Streamlit Frontend**: Interactive UI for document upload, querying, and evaluation results
+- **Nginx Reverse Proxy**: Routes `/api/*` to FastAPI, `/*` to Streamlit with WebSocket support
+- **Docker Compose**: Orchestrates all services with health checks and automatic restarts
+
+### Design Considerations
+
+**Scalability**
+- Pinecone serverless backend scales automatically with query volume
+- FastAPI supports multiple uvicorn workers for concurrent request handling
+- Deterministic IDs prevent duplicate ingestion and enable incremental updates
+- Namespace separation allows isolated dev/prod environments
+
+**Modularity**
+- Clear separation of concerns: ingestion, retrieval, generation, and serving
+- Pluggable components: easy to swap embedding models, LLMs, or vector stores
+- Type-specific loaders and chunking strategies extend easily to new document formats
+
+**Maintainability**
+- Comprehensive metadata tracking enables debugging and auditing
+- RAGAS evaluation framework provides automated quality metrics
+- Configuration via environment variables simplifies deployment
+- Docker Compose simplifies local development and production deployments
 
 ### Key Features
 
 - Support for multiple document types (PDF, DOCX, CSV)
 - Deterministic document and chunk IDs
 - Rich metadata tracking (page numbers, sections, row IDs)
-- Namespace-based separation (dev/prod)
+- Namespace-based separation (prod)
 - Reranking for improved retrieval quality
 - Grounded answers with citations
 - FastAPI web service
-- Evaluation framework
+- Streamlit UI with evaluation dashboard
 
 ## Repository Structure
 
@@ -179,7 +229,7 @@ This will:
    - **Context Precision**: Relevant chunks ranked higher
    - **Context Recall**: All relevant context retrieved
    - **Answer Correctness**: Similarity to ground truth
-   - **Answer Similarity**: Semantic similarity to ground truth
+   
 4. Save results to `eval/results/`:
    - `latest_results.json` - Detailed per-query results
    - `detailed_results_TIMESTAMP.json` - Timestamped backup
@@ -193,36 +243,116 @@ View results in the Streamlit UI "Evaluation Results" tab.
 
 ## Deployment
 
-### Local Development
+### Local Docker Deployment
 
-The FastAPI app runs on `http://0.0.0.0:8000` by default. For production deployment:
+The easiest way to run the application is using Docker Compose:
 
-1. Use a production ASGI server like Gunicorn with Uvicorn workers:
-   ```bash
-   gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
-   ```
+```bash
+# Build and start all services
+docker-compose up -d
 
-2. Set up environment variables in your deployment environment
+# View logs
+docker-compose logs -f
 
-3. Configure reverse proxy (nginx, etc.) if needed
+# Check service status
+docker-compose ps
 
-4. Ensure Pinecone index exists and is accessible from your deployment environment
+# Stop all services
+docker-compose down
+```
 
-### Docker (Optional)
+Services will be available at:
+- **Streamlit UI**: `http://localhost` (nginx routes root to Streamlit)
+- **FastAPI API**: `http://localhost/api` (nginx routes `/api/*` to FastAPI)
 
-Example Dockerfile:
+**Architecture:**
+- `fastapi`: Backend API (port 8000)
+- `streamlit`: Frontend UI (port 8501)
+- `nginx`: Reverse proxy (port 80) - routes `/api/*` → FastAPI, `/*` → Streamlit
 
-```dockerfile
-FROM python:3.11-slim
+### AWS EC2 Deployment
 
-WORKDIR /app
+For production deployment on AWS EC2:
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+#### 1. Launch EC2 Instance
 
-COPY . .
+- **Instance Type**: t3.medium or larger (2 vCPU, 4 GB RAM minimum)
+- **OS**: Ubuntu 22.04 LTS
+- **Security Group**: Allow inbound traffic on:
+  - Port 22 (SSH)
+  - Port 80 (HTTP)
+  - Port 443 (HTTPS, optional for SSL)
+- **Storage**: 20 GB EBS volume minimum
+- **(Optional)** Attach Elastic IP for stable DNS
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+#### 2. Install Docker
+
+SSH into your EC2 instance and install Docker:
+
+```bash
+sudo apt update
+sudo apt install -y docker.io docker-compose
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo usermod -aG docker ubuntu
+```
+
+Log out and log back in for group changes to take effect.
+
+#### 3. Clone and Configure
+
+```bash
+git clone <your-repo-url> cedar-rag
+cd cedar-rag
+
+# Create and configure environment file
+cp .env.example .env
+nano .env  # Add your API keys and configuration
+```
+
+Required environment variables:
+- `PINECONE_API_KEY`
+- `PINECONE_INDEX_NAME`
+- `PINECONE_ENVIRONMENT`
+- `OPENAI_API_KEY`
+- `EMBEDDING_MODEL=text-embedding-3-small`
+- `LLM_MODEL=gpt-4o-mini`
+
+#### 4. Deploy
+
+```bash
+docker-compose up -d
+```
+
+#### 5. Access Application
+
+- Via EC2 Public IP: `http://<EC2-PUBLIC-IP>`
+
+#### Monitoring
+
+```bash
+# View logs
+docker-compose logs -f
+
+# Check resource usage
+docker stats
+
+# Restart services
+docker-compose restart
+
+# Update and redeploy
+git pull
+docker-compose down
+docker-compose build
+docker-compose up -d
+```
+
+### Local Development (without Docker)
+
+The FastAPI app runs on `http://0.0.0.0:8000` by default. 
+
+```bash
+python -m app.main
 ```
 
 
