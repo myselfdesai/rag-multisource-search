@@ -8,13 +8,13 @@
         "ground_truth": "DeepSeek-R1-Zero improves reasoning using Group Relative Policy Optimization (GRPO), which optimizes the policy by comparing groups of sampled outputs without relying on a separate critic model. Its reward system is rule-based and includes accuracy rewards to verify correctness of final answers and format rewards that enforce structured reasoning output, incentivizing longer and more coherent chain-of-thought reasoning without supervised data."
     },
     {
-        "question": "What is the main innovation introduced by the Transformer model in the paper ?",
-        "ground_truth": "The main innovation of the Transformer model is that it relies entirely on attention mechanisms, specifically self-attention, and completely removes recurrence and convolution from the model architecture. This design allows the model to capture global dependencies between input and output tokens while enabling significantly greater parallelization and faster training compared to recurrent or convolutional sequence models."
+        "question": "What is the main innovation introduced by the Transformer model in the paper?",
+        "ground_truth": "The main innovation introduced by the Transformer model is that it is based solely on attention mechanisms and completely removes recurrence and convolution from the model architecture, enabling greater parallelization and faster training."
     },
     {
         "question": "Why does the Transformer use positional encodings, and how are they implemented in the original model?",
-        "ground_truth": "The Transformer uses positional encodings because it has no recurrence or convolution and therefore lacks an inherent notion of token order. Positional encodings are added to the input embeddings to provide information about the position of tokens in a sequence. In the original model, these encodings are implemented using fixed sinusoidal functions of different frequencies, allowing the model to learn relative position relationships and extrapolate to longer sequences than those seen during training."
-    },
+        "ground_truth": "The Transformer uses positional encodings because it has no recurrence or convolution and therefore lacks an inherent notion of token order. Positional encodings are added to the input embeddings and are implemented using fixed sinusoidal functions of different frequencies."
+    }
     {
         "question": "How does the EU AI Act classify AI systems based on risk, and which category is completely prohibited?",
         "ground_truth": "The AI Act classifies AI according to its risk: Unacceptable risk is prohibited. Most of the text addresses high-risk AI systems, which are regulated. A smaller section handles limited risk AI systems, subject to lighter transparency obligations. Minimal risk is unregulated."
