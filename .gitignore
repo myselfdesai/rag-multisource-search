@@ -28,5 +28,3 @@ data/
 .vscode/
 .idea/
 
-# Evaluation results
-eval/results/

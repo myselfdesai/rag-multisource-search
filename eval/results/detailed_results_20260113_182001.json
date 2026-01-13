@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-01-13T16:00:45.305994",
+  "timestamp": "2026-01-13T18:20:01.846610",
   "overall_metrics": {
-    "faithfulness": 0.13374218374218375,
-    "answer_relevancy": 0.8665366229716831,
+    "faithfulness": 0.08744588744588744,
+    "answer_relevancy": 0.8668203746112669,
     "context_precision": 0.0416666666625,
-    "context_recall": 0.13888888888888887,
-    "answer_correctness": 0.6714448594577319
+    "context_recall": 0.05555555555555555,
+    "answer_correctness": 0.648395715458607
   },
   "query_count": 6,
   "queries": [
@@ -65,10 +65,10 @@
         "response": "The \"aha moment\" observed during the training of DeepSeek-R1-Zero occurs when the model learns to allocate more thinking time to a problem by reevaluating its initial approach. This behavior signifies the model's growing reasoning abilities and exemplifies how reinforcement learning can lead to unexpected and sophisticated outcomes. It highlights the model's capacity to autonomously develop advanced problem-solving strategies without explicit instruction, showcasing the potential of reinforcement learning to enhance intelligence in artificial systems (Deepseek-r1 (1).pdf, page 9.0).",
         "reference": "The aha moment refers to a phase during reinforcement learning where an intermediate version of DeepSeek-R1-Zero learns to allocate more thinking time by reevaluating its initial approach to a problem. This behavior emerges spontaneously without explicit supervision and demonstrates the model’s growing ability to reflect, revise reasoning steps, and adopt more effective problem-solving strategies. It is significant because it highlights how reinforcement learning alone can lead to advanced and human-like reasoning behaviors.",
         "faithfulness": 0.2,
-        "answer_relevancy": 0.945082876417758,
+        "answer_relevancy": 0.9451077875571304,
         "context_precision": 0.0,
         "context_recall": 0.3333333333333333,
-        "answer_correctness": 0.7662467740275971
+        "answer_correctness": 0.7207966852203472
       }
     },
     {
@@ -127,14 +127,14 @@
         "response": "DeepSeek-R1-Zero uses reinforcement learning (RL) to improve reasoning by allowing the model to explore and develop reasoning capabilities without relying on supervised fine-tuning (SFT). This approach enables the model to engage in self-evolution through a pure RL process, where it learns to solve increasingly complex reasoning tasks by leveraging extended test-time computation (Deepseek-r1 (1).pdf, page 8.0).\n\nThe reward system plays a crucial role in this process. It incentivizes the model to allocate more thinking time to problems and to reevaluate its initial approaches, leading to the emergence of sophisticated behaviors such as reflection and the exploration of alternative problem-solving strategies. This self-directed learning, driven by the rewards, enhances the model's reasoning capabilities and allows it to autonomously develop advanced problem-solving strategies (Deepseek-r1 (1).pdf, page 8.0).",
         "reference": "DeepSeek-R1-Zero improves reasoning using Group Relative Policy Optimization (GRPO), which optimizes the policy by comparing groups of sampled outputs without relying on a separate critic model. Its reward system is rule-based and includes accuracy rewards to verify correctness of final answers and format rewards that enforce structured reasoning output, incentivizing longer and more coherent chain-of-thought reasoning without supervised data.",
         "faithfulness": 0.18181818181818182,
-        "answer_relevancy": 0.812885348058773,
+        "answer_relevancy": 0.8128322329432439,
         "context_precision": 0.0,
         "context_recall": 0.0,
-        "answer_correctness": 0.3300887002780966
+        "answer_correctness": 0.33006541578493054
       }
     },
     {
-      "question": "What is the main innovation introduced by the Transformer model in the paper ?",
+      "question": "What is the main innovation introduced by the Transformer model in the paper?",
       "answer": "The main innovation introduced by the Transformer model is the use of a network architecture that relies entirely on attention mechanisms, dispensing with recurrence and convolutions entirely. This allows for significantly more parallelization and achieves superior performance in sequence transduction tasks, such as machine translation, compared to traditional models that use recurrent or convolutional layers (Attention Is All You Need, page 1.0).",
       "contexts": [
         "Provided proper attribution is provided, Google hereby grants permission to reproduce the tables and figures in this paper solely for use in journalistic or scholarly works. Attention Is All You Need ...",
@@ -142,7 +142,7 @@
         "1 Introduction Recurrent neural networks, long short-term memory [ 13] and gated recurrent [ 7] neural networks in particular, have been firmly established as state of the art approaches in sequence m...",
         "Figure 1: The Transformer - model architecture. The Transformer follows this overall architecture using stacked self-attention and point-wise, fully connected layers for both the encoder and decoder, ..."
       ],
-      "ground_truth": "The main innovation of the Transformer model is that it relies entirely on attention mechanisms, specifically self-attention, and completely removes recurrence and convolution from the model architecture. This design allows the model to capture global dependencies between input and output tokens while enabling significantly greater parallelization and faster training compared to recurrent or convolutional sequence models.",
+      "ground_truth": "The main innovation introduced by the Transformer model is that it is based solely on attention mechanisms and completely removes recurrence and convolution from the model architecture, enabling greater parallelization and faster training.",
       "sources": [
         {
           "doc_id": "attention-is-all-you-need_09f2f4ab",
@@ -179,7 +179,7 @@
       ],
       "retrieved_count": 4,
       "metrics": {
-        "user_input": "What is the main innovation introduced by the Transformer model in the paper ?",
+        "user_input": "What is the main innovation introduced by the Transformer model in the paper?",
         "retrieved_contexts": [
           "Provided proper attribution is provided, Google hereby grants permission to reproduce the tables and figures in this paper solely for use in journalistic or scholarly works. Attention Is All You Need ...",
           "Table 4: The Transformer generalizes well to English constituency parsing (Results are on Section 23 of WSJ) Parser Training WSJ 23 F1 Vinyals & Kaiser el al. (2014) [37] WSJ only, discriminative 88.3...",
@@ -187,12 +187,12 @@
           "Figure 1: The Transformer - model architecture. The Transformer follows this overall architecture using stacked self-attention and point-wise, fully connected layers for both the encoder and decoder, ..."
         ],
         "response": "The main innovation introduced by the Transformer model is the use of a network architecture that relies entirely on attention mechanisms, dispensing with recurrence and convolutions entirely. This allows for significantly more parallelization and achieves superior performance in sequence transduction tasks, such as machine translation, compared to traditional models that use recurrent or convolutional layers (Attention Is All You Need, page 1.0).",
-        "reference": "The main innovation of the Transformer model is that it relies entirely on attention mechanisms, specifically self-attention, and completely removes recurrence and convolution from the model architecture. This design allows the model to capture global dependencies between input and output tokens while enabling significantly greater parallelization and faster training compared to recurrent or convolutional sequence models.",
-        "faithfulness": 0.16666666666666666,
-        "answer_relevancy": 0.8960447482537564,
+        "reference": "The main innovation introduced by the Transformer model is that it is based solely on attention mechanisms and completely removes recurrence and convolution from the model architecture, enabling greater parallelization and faster training.",
+        "faithfulness": 0.0,
+        "answer_relevancy": 0.9012440336413536,
         "context_precision": 0.249999999975,
-        "context_recall": 0.5,
-        "answer_correctness": 0.5676878527788741
+        "context_recall": 0.0,
+        "answer_correctness": 0.6336173040037676
       }
     },
     {
@@ -204,7 +204,7 @@
         "Table 2: The Transformer achieves better BLEU scores than previous state-of-the-art models on the English-to-German and English-to-French newstest2014 tests at a fraction of the training cost. ModelBL...",
         "Table 3: Variations on the Transformer architecture. Unlisted values are identical to those of the base model. All metrics are on the English-to-German translation development set, newstest2013. Liste..."
       ],
-      "ground_truth": "The Transformer uses positional encodings because it has no recurrence or convolution and therefore lacks an inherent notion of token order. Positional encodings are added to the input embeddings to provide information about the position of tokens in a sequence. In the original model, these encodings are implemented using fixed sinusoidal functions of different frequencies, allowing the model to learn relative position relationships and extrapolate to longer sequences than those seen during training.",
+      "ground_truth": "The Transformer uses positional encodings because it has no recurrence or convolution and therefore lacks an inherent notion of token order. Positional encodings are added to the input embeddings and are implemented using fixed sinusoidal functions of different frequencies.",
       "sources": [
         {
           "doc_id": "attention-is-all-you-need_09f2f4ab",
@@ -249,24 +249,24 @@
           "Table 3: Variations on the Transformer architecture. Unlisted values are identical to those of the base model. All metrics are on the English-to-German translation development set, newstest2013. Liste..."
         ],
         "response": "The Transformer uses positional encodings to provide information about the position of tokens in the input sequence, as the model itself does not have any inherent notion of order due to its reliance on self-attention mechanisms. In the original model, positional encodings are implemented using sinusoidal functions, which allow the model to learn the relative positions of tokens effectively (Attention_is_all_you_need.pdf, page 2.0).",
-        "reference": "The Transformer uses positional encodings because it has no recurrence or convolution and therefore lacks an inherent notion of token order. Positional encodings are added to the input embeddings to provide information about the position of tokens in a sequence. In the original model, these encodings are implemented using fixed sinusoidal functions of different frequencies, allowing the model to learn relative position relationships and extrapolate to longer sequences than those seen during training.",
+        "reference": "The Transformer uses positional encodings because it has no recurrence or convolution and therefore lacks an inherent notion of token order. Positional encodings are added to the input embeddings and are implemented using fixed sinusoidal functions of different frequencies.",
         "faithfulness": 0.0,
-        "answer_relevancy": 0.702904851245728,
+        "answer_relevancy": 0.7028840568476751,
         "context_precision": 0.0,
         "context_recall": 0.0,
-        "answer_correctness": 0.8246215818622944
+        "answer_correctness": 0.7177180450193239
       }
     },
     {
       "question": "How does the EU AI Act classify AI systems based on risk, and which category is completely prohibited?",
-      "answer": "The EU AI Act classifies AI systems into four categories based on risk: \n\n1. **Unacceptable risk**: This category is completely prohibited and includes systems such as social scoring systems and manipulative AI that deploy subliminal or deceptive techniques to distort behavior and impair informed decision-making, causing significant harm (EU AI Act Doc, Introduction, page 1).\n\n2. **High-risk AI systems**: These are regulated and include systems used as safety components in products covered by EU laws or those that profile individuals (EU AI Act Doc, Introduction, page 2).\n\n3. **Limited risk AI systems**: These are subject to lighter transparency obligations, requiring developers and deployers to inform end-users that they are interacting with AI (EU AI Act Doc, Introduction, page 1).\n\n4. **Minimal risk AI systems**: This category is unregulated and includes the majority of AI applications currently available on the EU single market (EU AI Act Doc, Introduction, page 1). \n\nThus, the category that is completely prohibited is the **unacceptable risk** category.",
+      "answer": "The EU AI Act classifies AI systems into four risk categories: \n\n1. **Unacceptable risk**: This category is completely prohibited and includes systems such as social scoring systems and manipulative AI that deploy subliminal, manipulative, or deceptive techniques to distort behavior and impair informed decision-making, causing significant harm (EU AI Act Doc, Introduction, page 1).\n\n2. **High-risk AI systems**: These are regulated and include systems used as safety components in products covered by EU laws or those that profile individuals (EU AI Act Doc, Introduction, page 2).\n\n3. **Limited risk AI systems**: These are subject to lighter transparency obligations, requiring developers and deployers to inform end-users that they are interacting with AI (EU AI Act Doc, Introduction, page 1).\n\n4. **Minimal risk AI systems**: This category is unregulated and includes the majority of AI applications currently available on the EU single market (EU AI Act Doc, Introduction, page 1). \n\nThus, the category that is completely prohibited is the **unacceptable risk** category.",
       "contexts": [
         "High-level summary of the AI Act 27 Feb, 2024 Updated on 30 May in accordance with the Corrigendum version of the AI Act. In this article we provide you with a high-level summary of the AI Act, select...",
         "High risk AI systems are those: used as a safety component or a product covered by EU laws in Annex I AND required to undergo a third-party conformity assessment under those Annex I laws; OR those und...",
         "Will account for international approaches. Will cover but not necessarily limited to the above obligations, particularly the relevant information to include in technical documentation for authorities ...",
         "exploiting vulnerabilities related to age, disability, or socio-economic circumstances to distort behaviour, causing significant harm. biometric categorisation systems inferring sensitive attributes (..."
       ],
-      "ground_truth": "The EU AI Act classifies AI systems into four risk categories: unacceptable risk, high risk, limited risk, and minimal risk. AI systems classified as unacceptable risk are completely prohibited. These include systems such as social scoring, manipulative or deceptive AI that causes significant harm, and certain biometric identification practices like untargeted facial image scraping.",
+      "ground_truth": "The AI Act classifies AI according to its risk: Unacceptable risk is prohibited. Most of the text addresses high-risk AI systems, which are regulated. A smaller section handles limited risk AI systems, subject to lighter transparency obligations. Minimal risk is unregulated.",
       "sources": [
         {
           "doc_id": "eu-ai-act-doc_445db5f4",
@@ -310,18 +310,18 @@
           "Will account for international approaches. Will cover but not necessarily limited to the above obligations, particularly the relevant information to include in technical documentation for authorities ...",
           "exploiting vulnerabilities related to age, disability, or socio-economic circumstances to distort behaviour, causing significant harm. biometric categorisation systems inferring sensitive attributes (..."
         ],
-        "response": "The EU AI Act classifies AI systems into four categories based on risk: \n\n1. **Unacceptable risk**: This category is completely prohibited and includes systems such as social scoring systems and manipulative AI that deploy subliminal or deceptive techniques to distort behavior and impair informed decision-making, causing significant harm (EU AI Act Doc, Introduction, page 1).\n\n2. **High-risk AI systems**: These are regulated and include systems used as safety components in products covered by EU laws or those that profile individuals (EU AI Act Doc, Introduction, page 2).\n\n3. **Limited risk AI systems**: These are subject to lighter transparency obligations, requiring developers and deployers to inform end-users that they are interacting with AI (EU AI Act Doc, Introduction, page 1).\n\n4. **Minimal risk AI systems**: This category is unregulated and includes the majority of AI applications currently available on the EU single market (EU AI Act Doc, Introduction, page 1). \n\nThus, the category that is completely prohibited is the **unacceptable risk** category.",
-        "reference": "The EU AI Act classifies AI systems into four risk categories: unacceptable risk, high risk, limited risk, and minimal risk. AI systems classified as unacceptable risk are completely prohibited. These include systems such as social scoring, manipulative or deceptive AI that causes significant harm, and certain biometric identification practices like untargeted facial image scraping.",
+        "response": "The EU AI Act classifies AI systems into four risk categories: \n\n1. **Unacceptable risk**: This category is completely prohibited and includes systems such as social scoring systems and manipulative AI that deploy subliminal, manipulative, or deceptive techniques to distort behavior and impair informed decision-making, causing significant harm (EU AI Act Doc, Introduction, page 1).\n\n2. **High-risk AI systems**: These are regulated and include systems used as safety components in products covered by EU laws or those that profile individuals (EU AI Act Doc, Introduction, page 2).\n\n3. **Limited risk AI systems**: These are subject to lighter transparency obligations, requiring developers and deployers to inform end-users that they are interacting with AI (EU AI Act Doc, Introduction, page 1).\n\n4. **Minimal risk AI systems**: This category is unregulated and includes the majority of AI applications currently available on the EU single market (EU AI Act Doc, Introduction, page 1). \n\nThus, the category that is completely prohibited is the **unacceptable risk** category.",
+        "reference": "The AI Act classifies AI according to its risk: Unacceptable risk is prohibited. Most of the text addresses high-risk AI systems, which are regulated. A smaller section handles limited risk AI systems, subject to lighter transparency obligations. Minimal risk is unregulated.",
         "faithfulness": 0.14285714285714285,
-        "answer_relevancy": 0.8517271667026857,
+        "answer_relevancy": 0.8482793895267996,
         "context_precision": 0.0,
         "context_recall": 0.0,
-        "answer_correctness": 0.6041835412885067
+        "answer_correctness": 0.5516923059084323
       }
     },
     {
       "question": "What obligations do providers of high-risk AI systems have under the EU AI Act?",
-      "answer": "Providers of high-risk AI systems under the EU AI Act have the following obligations:\n\n1. Establish a risk management system throughout the AI system’s lifecycle.\n2. Conduct data governance to ensure that training, validation, and testing datasets are relevant, sufficiently representative, and as error-free and complete as possible.\n3. Draw up technical documentation to demonstrate compliance and provide authorities with the necessary information for assessment.\n4. Design the AI system for record-keeping to automatically record relevant events for identifying national level risks and substantial modifications.\n5. Provide instructions for use to downstream deployers to enable their compliance.\n6. Design the AI system to allow for human oversight.\n7. Achieve appropriate levels of accuracy, robustness, and cybersecurity.\n8. Establish a quality management system to ensure compliance (Art. 8–17) (EU AI Act Doc.docx, section: Introduction).",
+      "answer": "Providers of high-risk AI systems under the EU AI Act have the following obligations:\n\n1. Establish a risk management system throughout the AI system’s lifecycle.\n2. Conduct data governance to ensure that training, validation, and testing datasets are relevant, sufficiently representative, and as error-free and complete as possible.\n3. Draw up technical documentation to demonstrate compliance and provide authorities with the necessary information for assessment.\n4. Design the AI system for record-keeping to automatically record events relevant for identifying national level risks and substantial modifications throughout its lifecycle.\n5. Provide instructions for use to downstream deployers to enable their compliance.\n6. Design the AI system to allow for human oversight.\n7. Achieve appropriate levels of accuracy, robustness, and cybersecurity.\n8. Establish a quality management system to ensure compliance (EU AI Act Doc, Introduction, section 0.0).",
       "contexts": [
         "High-level summary of the AI Act 27 Feb, 2024 Updated on 30 May in accordance with the Corrigendum version of the AI Act. In this article we provide you with a high-level summary of the AI Act, select...",
         "Will account for international approaches. Will cover but not necessarily limited to the above obligations, particularly the relevant information to include in technical documentation for authorities ...",
@@ -372,13 +372,13 @@
           "High risk AI systems are those: used as a safety component or a product covered by EU laws in Annex I AND required to undergo a third-party conformity assessment under those Annex I laws; OR those und...",
           "GPAI system means an AI system which is based on a general purpose AI model, that has the capability to serve a variety of purposes, both for direct use as well as for integration in other AI systems...."
         ],
-        "response": "Providers of high-risk AI systems under the EU AI Act have the following obligations:\n\n1. Establish a risk management system throughout the AI system’s lifecycle.\n2. Conduct data governance to ensure that training, validation, and testing datasets are relevant, sufficiently representative, and as error-free and complete as possible.\n3. Draw up technical documentation to demonstrate compliance and provide authorities with the necessary information for assessment.\n4. Design the AI system for record-keeping to automatically record relevant events for identifying national level risks and substantial modifications.\n5. Provide instructions for use to downstream deployers to enable their compliance.\n6. Design the AI system to allow for human oversight.\n7. Achieve appropriate levels of accuracy, robustness, and cybersecurity.\n8. Establish a quality management system to ensure compliance (Art. 8–17) (EU AI Act Doc.docx, section: Introduction).",
+        "response": "Providers of high-risk AI systems under the EU AI Act have the following obligations:\n\n1. Establish a risk management system throughout the AI system’s lifecycle.\n2. Conduct data governance to ensure that training, validation, and testing datasets are relevant, sufficiently representative, and as error-free and complete as possible.\n3. Draw up technical documentation to demonstrate compliance and provide authorities with the necessary information for assessment.\n4. Design the AI system for record-keeping to automatically record events relevant for identifying national level risks and substantial modifications throughout its lifecycle.\n5. Provide instructions for use to downstream deployers to enable their compliance.\n6. Design the AI system to allow for human oversight.\n7. Achieve appropriate levels of accuracy, robustness, and cybersecurity.\n8. Establish a quality management system to ensure compliance (EU AI Act Doc, Introduction, section 0.0).",
         "reference": "Providers of high-risk AI systems must establish a risk management system throughout the AI system’s lifecycle, ensure proper data governance, prepare technical documentation, enable record-keeping, provide instructions for use, design systems for human oversight, ensure accuracy, robustness and cybersecurity, and implement a quality management system to demonstrate compliance with the EU AI Act.",
-        "faithfulness": 0.1111111111111111,
+        "faithfulness": 0.0,
         "answer_relevancy": 0.9905747471513978,
         "context_precision": 0.0,
         "context_recall": 0.0,
-        "answer_correctness": 0.9358407065110226
+        "answer_correctness": 0.9364845368148398
       }
     }
   ]

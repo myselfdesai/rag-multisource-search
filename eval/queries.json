@@ -14,7 +14,7 @@
     {
         "question": "Why does the Transformer use positional encodings, and how are they implemented in the original model?",
         "ground_truth": "The Transformer uses positional encodings because it has no recurrence or convolution and therefore lacks an inherent notion of token order. Positional encodings are added to the input embeddings and are implemented using fixed sinusoidal functions of different frequencies."
-    }
+    },
     {
         "question": "How does the EU AI Act classify AI systems based on risk, and which category is completely prohibited?",
         "ground_truth": "The AI Act classifies AI according to its risk: Unacceptable risk is prohibited. Most of the text addresses high-risk AI systems, which are regulated. A smaller section handles limited risk AI systems, subject to lighter transparency obligations. Minimal risk is unregulated."
